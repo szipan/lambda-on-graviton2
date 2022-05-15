@@ -6,7 +6,7 @@ RUN curl -L -o /etc/yum.repos.d/corretto.repo https://yum.corretto.aws/corretto.
 
 # Update the packages and install Amazon Corretto 18, Maven and Zip
 RUN yum -y update
-RUN yum install -y java-18-amazon-corretto-devel maven zip
+RUN yum install -y java-18-amazon-corretto-devel maven zip tar
 
 # Set Java 18 as the default
 RUN update-alternatives --set java "/usr/lib/jvm/java-18-amazon-corretto/bin/java"
@@ -42,7 +42,7 @@ WORKDIR /
 COPY bootstrap bootstrap
 RUN chmod 755 bootstrap
 RUN cp /HelloWorldFunction/target/function.jar function.jar
-RUN zip -r runtime.zip \
+RUN tar -cvf runtime.tar \
     bootstrap \
     function.jar \
     /jre18-slim
