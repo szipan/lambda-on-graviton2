@@ -13,15 +13,15 @@ RUN update-alternatives --set java "/usr/lib/jvm/java-18-amazon-corretto/bin/jav
 RUN update-alternatives --set javac "/usr/lib/jvm/java-18-amazon-corretto/bin/javac"
 
 # Copy the software folder to the image and build the function
-COPY software software
-WORKDIR /software/example-function
+COPY HelloWorldFunction HelloWorldFunction
+WORKDIR /HelloWorldFunction
 RUN mvn clean package
 
 # Package everything together into a custom runtime archive
 WORKDIR /
 COPY bootstrap bootstrap
 RUN chmod 755 bootstrap
-RUN cp /software/example-function/target/function.jar function.jar
+RUN cp /HelloWorldFunction/target/function.jar function.jar
 RUN zip -r runtime.zip \
     bootstrap \
     function.jar \
